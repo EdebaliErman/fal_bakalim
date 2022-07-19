@@ -1,20 +1,25 @@
-import 'dart:math';
-
-import 'package:falci_kedi/string_items.dart';
+import 'package:falci_kedi/view_items/abstruct/base_fal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class LifeView extends StatefulWidget {
-  const LifeView({Key? key}) : super(key: key);
-
+class FalView extends StatefulWidget {
+  const FalView({Key? key, required this.falService, required this.animateUrl})
+      : super(key: key);
+  final BaseFalService falService;
+  final String animateUrl;
+  /*     'https://assets5.lottiefiles.com/private_files/lf30_jim7okck.json';
+*/
   @override
-  State<LifeView> createState() => _LifeViewState();
+  State<FalView> createState() => _FalViewState();
 }
 
-class _LifeViewState extends State<LifeView> {
-  final String _lifeAnimate =
-      'https://assets5.lottiefiles.com/private_files/lf30_jim7okck.json';
-  int lifeIndex = 0;
+class _FalViewState extends State<FalView> {
+  String randomFal = 'Rasgele fal için butona tıklayınız';
+
+  String getRandom() {
+    return widget.falService.getRandom();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +27,8 @@ class _LifeViewState extends State<LifeView> {
       body: Column(
         children: [
           Center(
-            child: SizedBox(height: 200, child: Lottie.network(_lifeAnimate)),
+            child:
+                SizedBox(height: 200, child: Lottie.network(widget.animateUrl)),
           ),
           LifeCard(context),
           LifeBox()
@@ -43,12 +49,12 @@ class _LifeViewState extends State<LifeView> {
             ),
             onPressed: () {
               setState(() {
-                lifeIndex = Random().nextInt(10) + 1;
+                randomFal = getRandom();
               });
             },
             child: Row(
               children: [
-                Lottie.network(_lifeAnimate),
+                Lottie.network(widget.animateUrl),
               ],
             )),
       ),
@@ -60,7 +66,7 @@ class _LifeViewState extends State<LifeView> {
       child: SizedBox(
           height: 400,
           child: Text(
-            FalTextView().life[lifeIndex],
+            randomFal,
             style: Theme.of(context).textTheme.subtitle2,
           )),
     );
